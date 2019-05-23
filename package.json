@@ -1,0 +1,24 @@
+{
+  "name": "oidc-auth",
+  "version": "0.0.1",
+  "description": "OIDC Authentication library",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/udistrital/oidc-auth-js.git"
+  },
+  "keywords": [
+    "OIDC",
+    "Auth",
+    "Security"
+  ],
+  "author": "udistrital",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/udistrital/oidc-auth-js/issues"
+  },
+  "homepage": "https://github.com/udistrital/oidc-auth-js#readme"
+}
