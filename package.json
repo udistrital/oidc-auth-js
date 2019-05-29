@@ -20,5 +20,10 @@
   "bugs": {
     "url": "https://github.com/udistrital/oidc-auth-js/issues"
   },
-  "homepage": "https://github.com/udistrital/oidc-auth-js#readme"
+  "homepage": "https://github.com/udistrital/oidc-auth-js#readme",
+  "dependencies": {
+    "ts-md5": "^1.2.4",
+    "rxjs": "^6.2.0",
+    "rxjs-compat": "^6.1.0"
+  }
 }
