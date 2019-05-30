@@ -1,4 +1,10 @@
 {
+  "_npmUser": {
+    "name": "udistrital"
+  },
+  "_requiredBy": [
+    "#USER"
+  ],
   "name": "oidc-auth",
   "version": "0.0.1",
   "description": "OIDC Authentication library",
