@@ -6,6 +6,10 @@ var GENERAL =
     TOKEN:{}
   }
 }
+var logout_url="";
+var setting_bearer={
+  headers:{}
+}
 
 if (window.localStorage.getItem('access_token') === null ||
   window.localStorage.getItem('access_token') === undefined) {
@@ -43,7 +47,10 @@ if (window.localStorage.getItem('access_token') === null ||
       }
     }
   };
-  } /*else {
+  }
+  setExpiresAt();
+  timer();
+  /*else {
   let state;
   const queryString = location.search.substring(1);
   const regex = /([^&=]+)=([^&]*)/g;
@@ -62,9 +69,10 @@ if (window.localStorage.getItem('access_token') === null ||
 }*/
 
 export function init() {
-  clearUrl();
+  console.log("entro a init")
+  this.clearUrl();
   //var logOut = '';
-  timer();
+  this.timer();
 }
 
 export function setGeneral(url_token){
@@ -91,12 +99,7 @@ export function setGeneral(url_token){
 
 
 export function logout() {
-  let logOut = GENERAL.ENTORNO.TOKEN.SIGN_OUT_URL;
-  logOut += '?id_token_hint=' + window.localStorage.getItem('id_token');
-  logOut += '&post_logout_redirect_uri=' + GENERAL.ENTORNO.TOKEN.SIGN_OUT_REDIRECT_URL; // // + window.location.href; para redirect con regex
-  logOut += '&state=' + window.localStorage.getItem('state');
-  window.location.replace(logOut);
-  
+  window.location.replace(logout_url);
 }
 
 export function clearUrl() {
@@ -116,10 +119,29 @@ export function getPayload() {
   }
 }
 
+ export function logoutValid () {
+  console.log("entro a logout valid")
+  var state;
+  var valid = true;
+  var queryString = location.search.substring(1);
+  var regex = /([^&=]+)=([^&]*)/g;
+  var m;
+  while (!!(m = regex.exec(queryString))) {
+    state = decodeURIComponent(m[2]);
+  }
+  if (window.localStorage.getItem('state') === state) {
+    window.localStorage.clear();
+    valid = true;
+  } else {
+    valid = false;
+  }
+  return valid;
+}
+
 export function live() {
-  if (window.localStorage.getItem('id_token') !== null && window.localStorage.getItem('id_token') !== undefined) {
-    this.bearer = {
-      headers: new HttpHeaders({
+  if (window.localStorage.getItem('id_token') !== null && window.localStorage.getItem('id_token') !== undefined && !this.logoutValid() ) {
+    var bearer = {
+      headers: new Headers({
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
         'authorization': 'Bearer ' + window.localStorage.getItem('access_token'),
         'cache-control': 'no-cache',
@@ -131,6 +153,40 @@ export function live() {
     this.getAuthorizationUrl()
     return false;
   }
+}
+
+ export function live_token () {
+  if (window.localStorage.getItem('id_token') === 'undefined' || window.localStorage.getItem('id_token') === null || this.logoutValid()) {
+    this.getAuthorizationUrl();
+    return false;
+  } else {
+      setting_bearer = {
+      headers: new Headers({
+        headers: {
+          'Accept': 'application/json',
+          "Authorization": "Bearer " + window.localStorage.getItem('access_token'),
+        }    
+        // 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        // 'authorization': 'Bearer ' + window.localStorage.getItem('access_token'),
+        // 'cache-control': 'no-cache',
+      }),
+    }
+    logout_url = GENERAL.ENTORNO.TOKEN.SIGN_OUT_URL;
+    logout_url += '?id_token_hint=' + window.localStorage.getItem('id_token');
+    logout_url += '&post_logout_redirect_uri=' + GENERAL.ENTORNO.TOKEN.SIGN_OUT_REDIRECT_URL;
+    logout_url += '&state=' + window.localStorage.getItem('state');
+    return true;
+  }
+}
+
+export function getHeader () {
+  setting_bearer = {
+    headers: {
+      'Accept': 'application/json',
+      "Authorization": "Bearer " + window.localStorage.getItem('access_token'),
+    } 
+  }
+  return setting_bearer;
 }
 
 export function getAuthorizationUrl() {
@@ -164,10 +220,9 @@ export function generateState() {
 }
 
 export function setExpiresAt() {
-  if (window.localStorage.getItem('expires_at') === null) {
+  if (window.localStorage.getItem('expires_at') === null || window.localStorage.getItem('expires_at') === undefined) {
     const expires_at = new Date();
-    expires_at.setSeconds(expires_at.getSeconds() +
-      parseInt(window.localStorage.getItem('expires_in'), 10) - 60);
+    expires_at.setSeconds(expires_at.getSeconds() + parseInt(window.localStorage.getItem('expires_in'), 10) - 60);
     window.localStorage.setItem('expires_at', expires_at.toUTCString());
   }
 }
@@ -178,8 +233,9 @@ export function expired() {
 
 export function timer() {
   setInterval(()=>{
-    if (window.localStorage.getItem('expires_at') !== null) {
-      if (this.expired()) {
+    console.log("entro a timer")
+   if (window.localStorage.getItem('expires_at') !== null || window.localStorage.getItem('expires_at')!== undefined) {
+      if (expired()) {
         window.localStorage.clear();
       }
     }
