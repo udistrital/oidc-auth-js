@@ -28,7 +28,7 @@ if (window.localStorage.getItem('access_token') === null ||
   req.open('GET', query, true);
   if (params['id_token'] !== null && params['id_token'] !== undefined) {
     window.localStorage.setItem('access_token', params['access_token']);
-    //if token setearñp
+    //if token setear
     window.localStorage.setItem('id_token', params['id_token']);
     window.localStorage.setItem('expires_in', params['expires_in']);
     window.localStorage.setItem('state', params['state']);
@@ -42,60 +42,18 @@ if (window.localStorage.getItem('access_token') === null ||
       } else if (req.status === 400) {
         window.alert('There was an error processing the token.');
       } else {
-        // alert('something else other than 200 was returned');
-        // console.info(req);
+
       }
     }
   };
   }
   setExpiresAt();
   timer();
-  /*else {
-  let state;
-  const queryString = location.search.substring(1);
-  const regex = /([^&=]+)=([^&]*)/g;
-  let m;
-  while (!!(m = regex.exec(queryString))) {
-    state = decodeURIComponent(m[2]);
-  }
-  if (window.localStorage.getItem('state') === state) {
-    window.localStorage.clear();
-    const uri = window.location.toString();
-    if (uri.indexOf('?') > 0) {
-      const clean_uri = uri.substring(0, uri.indexOf('?'));
-      window.history.replaceState({}, document.title, clean_uri);
-    }
-  }
-}*/
 
-export function init() {
-  console.log("entro a init")
-  this.clearUrl();
-  //var logOut = '';
-  this.timer();
-}
 
 export function setGeneral(url_token){
   GENERAL.ENTORNO.TOKEN=url_token;
 }
-
-// const GENERAL = {
-//   ENTORNO: {
-//     TOKEN: {
-//       AUTORIZATION_URL: "https://autenticacion.udistrital.edu.co/oauth2/authorize",
-//       URL_USER_INFO: "https://autenticacion.udistrital.edu.co/oauth2/userinfo",
-//       CLIENTE_ID: "pszmROXqfec4pTShgF_fn2DAAX0a",
-//       REDIRECT_URL: "http://localhost:9000/",
-//       RESPONSE_TYPE: "id_token token",
-//       SCOPE: "openid email",
-//       BUTTON_CLASS: "btn btn-warning btn-sm",
-//       SIGN_OUT_URL: "https://autenticacion.udistrital.edu.co/oidc/logout",
-//       SIGN_OUT_REDIRECT_URL: "http://localhost:9000/",
-//       SIGN_OUT_APPEND_TOKEN: "true",
-//       REFRESH_TOKEN: "https://autenticacion.udistrital.edu.co/oauth2/token",
-//     }
-//   }
-// }
 
 
 export function logout() {
@@ -111,12 +69,10 @@ export function clearUrl() {
 }
 
 export function getPayload() {
-  if (this.live) {
+
     const id_token = window.localStorage.getItem('id_token').split('.');
     return JSON.parse(atob(id_token[1]));
-  } else {
-    return false;
-  }
+
 }
 
  export function logoutValid () {
@@ -166,9 +122,6 @@ export function live() {
           'Accept': 'application/json',
           "Authorization": "Bearer " + window.localStorage.getItem('access_token'),
         }    
-        // 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        // 'authorization': 'Bearer ' + window.localStorage.getItem('access_token'),
-        // 'cache-control': 'no-cache',
       }),
     }
     logout_url = GENERAL.ENTORNO.TOKEN.SIGN_OUT_URL;
@@ -207,7 +160,6 @@ export function getAuthorizationUrl() {
     url += '&nonce=' + encodeURIComponent(params.nonce);
   }
   url += '&state=' + encodeURIComponent(params.state);
-  // alert(url);
   window.location = url;
   return url;
 }

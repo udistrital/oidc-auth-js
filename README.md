@@ -2,6 +2,10 @@
 
 Libreria para autenticación sobre OpenID Connect
 
+## Instalación
+
+npm install oidc-auth
+
 ## Funciones
 
 ### setGeneral(token_url):
@@ -9,7 +13,6 @@ Es el método que recibe como parámetro un objeto el cual es usado por lo demá
 
        var token_url = {
     	    AUTORIZATION_URL: //url de autorización del servidor con OIDC ,
-    	    URL_USER_INFO:  //url de donde se retorna la información del usuario,
     	    CLIENTE_ID:  //client_id de la aplicación,
     	    REDIRECT_URL:  //url de la aplicación a la que se desea redireccionar despues del login,
     	    RESPONSE_TYPE:  "id_token token", //tipo de respuesta para el flujo implicito
@@ -19,7 +22,7 @@ Es el método que recibe como parámetro un objeto el cual es usado por lo demá
     	    SIGN_OUT_REDIRECT_URL:  //url para redirección despues del logut,
     	    SIGN_OUT_APPEND_TOKEN:  "true",
     	        	    }
-### live_token(): 
+### liveToken(): 
 Es el método que verifica que el token se encuentra vigente (retorna true), y en caso contrario redirige a la url para realizar el inicio de la sesión.
 
 ### getPayload():
