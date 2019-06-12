@@ -22,11 +22,17 @@ Es el método que recibe como parámetro un objeto el cual es usado por lo demá
     	    SIGN_OUT_REDIRECT_URL:  //url para redirección despues del logut,
     	    SIGN_OUT_APPEND_TOKEN:  "true",
     	        	    }
-### liveToken(): 
-Es el método que verifica que el token se encuentra vigente (retorna true), y en caso contrario redirige a la url para realizar el inicio de la sesión.
+### live(flag): 
+Es el método que verifica que el token se encuentra vigente (retorna true), y en caso de que flag sea false redirige a la url para realizar el inicio de la sesión.
 
 ### getPayload():
 Es el método que permite obtener el objeto del token decodificado.
+
+### liveToken():
+Es el metodo que setea las cabeceras del bearer
+
+### getAuthorizationUrl():
+Es el metodo que arma y redirige a la url para el inicio de sesion.
 
 ### logout():
 Es el método que realiza el logout o cierre de sesión del usuario.

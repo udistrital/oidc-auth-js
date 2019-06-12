@@ -57,15 +57,17 @@ export function setGeneral(url_token){
 
 
 export function logout() {
+   
+  logout_url = GENERAL.ENTORNO.TOKEN.SIGN_OUT_URL;
+  logout_url += '?id_token_hint=' + window.localStorage.getItem('id_token');
+  logout_url += '&post_logout_redirect_uri=' + GENERAL.ENTORNO.TOKEN.SIGN_OUT_REDIRECT_URL;
+  logout_url += '&state=' + window.localStorage.getItem('state');
   window.location.replace(logout_url);
 }
 
 export function clearUrl() {
-  const uri = window.location.toString();
-  if (uri.indexOf('?') > 0) {
-    const clean_uri = uri.substring(0, uri.indexOf('?'));
-    window.history.replaceState({}, document.title, clean_uri);
-  }
+  const clean_uri = window.location.origin+window.location.pathname;
+  window.history.replaceState({}, document.title, clean_uri);
 }
 
 export function getPayload() {
@@ -94,41 +96,26 @@ export function getPayload() {
   return valid;
 }
 
-export function live() {
-  if (window.localStorage.getItem('id_token') !== null && window.localStorage.getItem('id_token') !== undefined && !this.logoutValid() ) {
-    var bearer = {
-      headers: new Headers({
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'authorization': 'Bearer ' + window.localStorage.getItem('access_token'),
-        'cache-control': 'no-cache',
-      }),
+// el flag es un booleano que define si abra boton de login
+export function live(flag){
+  if (window.localStorage.getItem('id_token') === 'undefined' || window.localStorage.getItem('id_token') === null || this.logoutValid()){
+    if(!flag){
+      this.getAuthorizationUrl()
     }
-    this.setExpiresAt();
-    return true;
-  } else {
-    this.getAuthorizationUrl()
-    return false;
+    return false
+  }else {
+    return true
   }
 }
 
- export function live_token () {
-  if (window.localStorage.getItem('id_token') === 'undefined' || window.localStorage.getItem('id_token') === null || this.logoutValid()) {
-    this.getAuthorizationUrl();
-    return false;
-  } else {
-      setting_bearer = {
-      headers: new Headers({
-        headers: {
-          'Accept': 'application/json',
-          "Authorization": "Bearer " + window.localStorage.getItem('access_token'),
-        }    
-      }),
-    }
-    logout_url = GENERAL.ENTORNO.TOKEN.SIGN_OUT_URL;
-    logout_url += '?id_token_hint=' + window.localStorage.getItem('id_token');
-    logout_url += '&post_logout_redirect_uri=' + GENERAL.ENTORNO.TOKEN.SIGN_OUT_REDIRECT_URL;
-    logout_url += '&state=' + window.localStorage.getItem('state');
-    return true;
+export function liveToken () {
+  setting_bearer = {
+  headers: new Headers({
+      headers: {
+        'Accept': 'application/json',
+        "Authorization": "Bearer " + window.localStorage.getItem('access_token'),
+      }    
+    }),
   }
 }
 
@@ -167,7 +154,6 @@ export function getAuthorizationUrl() {
 
 export function generateState() {
   const text = ((Date.now() + Math.random()) * Math.random()).toString().replace('.', '');
-  console.log("general: "+GENERAL.ENTORNO.TOKEN.AUTORIZATION_URL)
   return hash(text);
 }
 
