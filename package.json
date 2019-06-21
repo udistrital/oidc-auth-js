@@ -6,7 +6,7 @@
     "#USER"
   ],
   "name": "oidc-auth",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "OIDC Authentication library",
   "main": "index.js",
   "scripts": {
@@ -27,9 +27,5 @@
     "url": "https://github.com/udistrital/oidc-auth-js/issues"
   },
   "homepage": "https://github.com/udistrital/oidc-auth-js#readme",
-  "dependencies": {
-    "ts-md5": "^1.2.4",
-    "rxjs": "^6.2.0",
-    "rxjs-compat": "^6.1.0"
-  }
+  "dependencies": {}
 }
