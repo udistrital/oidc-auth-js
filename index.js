@@ -98,9 +98,9 @@ export function getPayload() {
 
 // el flag es un booleano que define si abra boton de login
 export function live(flag){
-  if (window.localStorage.getItem('id_token') === 'undefined' || window.localStorage.getItem('id_token') === null || this.logoutValid()){
+  if (window.localStorage.getItem('id_token') === 'undefined' || window.localStorage.getItem('id_token') === null || logoutValid()){
     if(!flag){
-      this.getAuthorizationUrl()
+      getAuthorizationUrl()
     }
     return false
   }else {
@@ -132,10 +132,10 @@ export function getHeader () {
 export function getAuthorizationUrl() {
    params = GENERAL.ENTORNO.TOKEN;
   if (!params.nonce) {
-    params.nonce = this.generateState();
+    params.nonce = generateState();
   }
   if (!params.state) {
-    params.state = this.generateState();
+    params.state = generateState();
   }
   let url = params.AUTORIZATION_URL + '?' +
     'client_id=' + encodeURIComponent(params.CLIENTE_ID) + '&' +
