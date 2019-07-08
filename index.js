@@ -78,7 +78,6 @@ export function getPayload() {
 }
 
  export function logoutValid () {
-  console.log("entro a logout valid")
   var state;
   var valid = true;
   var queryString = location.search.substring(1);
@@ -158,7 +157,7 @@ export function generateState() {
 }
 
 export function setExpiresAt() {
-  if (window.localStorage.getItem('expires_at') === null || window.localStorage.getItem('expires_at') === undefined) {
+  if (window.localStorage.getItem('expires_at') === null || window.localStorage.getItem('expires_at') === undefined || window.localStorage.getItem('expires_at') === 'Invalid Date' ) {
     const expires_at = new Date();
     expires_at.setSeconds(expires_at.getSeconds() + parseInt(window.localStorage.getItem('expires_in'), 10) - 60);
     window.localStorage.setItem('expires_at', expires_at.toUTCString());
@@ -171,7 +170,6 @@ export function expired() {
 
 export function timer() {
   setInterval(()=>{
-    console.log("entro a timer")
    if (window.localStorage.getItem('expires_at') !== null || window.localStorage.getItem('expires_at')!== undefined) {
       if (expired()) {
         window.localStorage.clear();
