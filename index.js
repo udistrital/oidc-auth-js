@@ -170,10 +170,13 @@ export function expired() {
 
 export function timer() {
   setInterval(()=>{
-   if (window.localStorage.getItem('expires_at') !== null || window.localStorage.getItem('expires_at')!== undefined) {
+   if (window.localStorage.getItem('expires_at') !== null) {
       if (expired()) {
+        logout();
         window.localStorage.clear();
       }
+    }else{
+      window.location.reload();
     }
   },5000)
 }
