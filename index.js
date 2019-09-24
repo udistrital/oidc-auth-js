@@ -49,7 +49,7 @@ if (window.localStorage.getItem('access_token') === null ||
   }
   setExpiresAt();
   timer();
-
+  clearUrl();
 
 export function setGeneral(url_token){
   GENERAL.ENTORNO.TOKEN=url_token;
@@ -62,6 +62,7 @@ export function logout() {
   logout_url += '?id_token_hint=' + window.localStorage.getItem('id_token');
   logout_url += '&post_logout_redirect_uri=' + GENERAL.ENTORNO.TOKEN.SIGN_OUT_REDIRECT_URL;
   logout_url += '&state=' + window.localStorage.getItem('state');
+  window.localStorage.clear();
   window.location.replace(logout_url);
 }
 
