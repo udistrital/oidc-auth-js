@@ -6,7 +6,7 @@
     "#USER"
   ],
   "name": "oidc-auth",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "OIDC Authentication library",
   "main": "index.js",
   "scripts": {

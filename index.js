@@ -33,7 +33,7 @@ if (window.localStorage.getItem('access_token') === null ||
     window.localStorage.setItem('expires_in', params['expires_in']);
     window.localStorage.setItem('state', params['state']);
   } else {
-    window.localStorage.clear();
+    clearStorage();
   }
   req.onreadystatechange = function (e) {
     if (req.readyState === 4) {
@@ -62,7 +62,7 @@ export function logout() {
   logout_url += '?id_token_hint=' + window.localStorage.getItem('id_token');
   logout_url += '&post_logout_redirect_uri=' + GENERAL.ENTORNO.TOKEN.SIGN_OUT_REDIRECT_URL;
   logout_url += '&state=' + window.localStorage.getItem('state');
-  window.localStorage.clear();
+  clearStorage();
   window.location.replace(logout_url);
 }
 
@@ -88,7 +88,7 @@ export function getPayload() {
     state = decodeURIComponent(m[2]);
   }
   if (window.localStorage.getItem('state') === state) {
-    window.localStorage.clear();
+    clearStorage();
     valid = true;
   } else {
     valid = false;
@@ -174,10 +174,18 @@ export function timer() {
    if (window.localStorage.getItem('expires_at') !== null) {
       if (expired()) {
         logout();
-        window.localStorage.clear();
+        clearStorage();
       }
     }else{
       window.location.reload();
     }
   },5000)
+}
+
+export function clearStorage() {
+    window.localStorage.removeItem('access_token');
+      window.localStorage.removeItem('id_token');
+      window.localStorage.removeItem('expires_in');
+      window.localStorage.removeItem('state');
+      window.localStorage.removeItem('expires_at');
 }
